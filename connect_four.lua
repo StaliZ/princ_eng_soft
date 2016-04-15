@@ -102,7 +102,7 @@ function play(tab, id_player)
 		end
 		tab[i][column] = id_player
 		display_tab(tab)
-		os.execute("sleep " .. tonumber(0.2))
+		os.execute("sleep " .. tonumber(0.1))
 		i = i + 1
 	end
 	return column
@@ -132,13 +132,23 @@ function check_line(tab, column)
 	return false
 end
 
+function check_full(tab)
+	for i=1, #tab[1] do
+		if tab[1][i] == " " then
+			return false
+		end
+		i = i + 1
+	end
+	return true
+end
+
 function check_end(tab, column, player)
 	if check_line(tab, column) == true then
 		io.write("PLAYER-", player, " won !\n")
 		return tonumber(player)
-	-- elseif check_full(tab) then
-	-- 	io.write("Game is full, no winner !\n")
-	-- 	return "-1"
+	elseif check_full(tab) == true then
+		io.write("Game is full, no winner !\n")
+		return "-1"
 	end
 	return 0
 end
