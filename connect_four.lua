@@ -33,4 +33,30 @@ function init_game()
   return tab
 end
 
+function display_tab(tab)
+	os.execute("clear")
+	for i=1, #tab do
+		for j=1, #tab[1]-1 do
+			io.write("|")
+			if tab[i][j] == "1" then
+				io.write("\27[41m")
+			elseif tab[i][j] == "2" then
+				io.write("\27[44m")
+			end
+			io.write("  ", "\27[00m")
+		end
+			io.write("|\n\n")
+	end
+	for i=1, #tab[1] do
+			io.write(" ")
+			if i < 10 then
+				io.write("0")
+			end
+			io.write(i)
+	end
+	io.write("\n")
+end
+
 tab = init_game()
+tab[2][3]= "1"
+display_tab(tab)
