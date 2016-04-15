@@ -59,6 +59,11 @@ function display_tab(tab)
 	io.write("\n")
 end
 
+function get_column_to_play()
+	io.write("\nChoose a column to play:\n")
+  return tonumber(io.read())
+end
+
 function play(tab, id_player)
 	local valid_input = false
 	local column = 10
