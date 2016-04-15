@@ -107,6 +107,17 @@ function play(tab, id_player)
 	end
 end
 
+function check_end(tab, column, player)
+	if check_line(tab, column) or check_column(tab, column) or check_diagonal(tab, column) then
+		io.write("PLAYER-", player, " won !\n")
+		return player
+	else if check_full(tab) then
+		io.write("Game is full, no winner !\n")
+		return -1
+	else then
+		return 0
+	end
+end
 
 local end_round = false
 local tab
