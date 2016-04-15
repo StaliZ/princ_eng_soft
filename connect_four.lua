@@ -59,8 +59,8 @@ function display_tab(tab)
 	io.write("\n")
 end
 
-function get_column_to_play()
-	io.write("\nChoose a column to play:\n")
+function get_column_to_play(id_player)
+	io.write("\nPLAYER-", id_player, "\n  Choose a column to play:\n")
   return tonumber(io.read())
 end
 
@@ -88,7 +88,7 @@ function play(tab, id_player)
 	display_tab(tab)
 	
 	repeat
-		column = get_column_to_play()
+		column = get_column_to_play(id_player)
 		if check_value_to_play(column, #tab[1]) == true then
 			if check_column_to_play(column, tab) == true then
 				valid_input = true
