@@ -72,15 +72,25 @@ function check_value_to_play(value, columns_max)
 	return true
 end
 
+function check_column_to_play(value, tab)
+	if tab[1][columns] == '1' or tab[1][columns] == '2' then
+		io.write("This column is full, try an other.\n")
+		return false
+	end
+	return true
+end
+
 function play(tab, id_player)
 	local valid_input = false
 	local column = 10
 	local i = 1
 
+	display_tab(tab)
+	
 	repeat
 		column = get_column_to_play()
 		if check_value_to_play(column, #tab[1]) == true then
-			if check_column_to_play(column, #tab[1]) == true then
+			if check_column_to_play(column, tab) == true then
 				valid_input = true
 			end
 		end
