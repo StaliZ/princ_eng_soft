@@ -89,8 +89,8 @@ function play(tab, id_player)
 	
 	repeat
 		column = get_column_to_play(id_player)
-		if check_value_to_play(column, #tab[1]) == true then
-			if check_column_to_play(column, tab) == true then
+		if check_value_to_play(column, #tab[1]) then
+			if check_column_to_play(column, tab) then
 				valid_input = true
 			end
 		end
@@ -132,6 +132,22 @@ function check_line(tab, column)
 	return false
 end
 
+function check_column(tab, column)
+	local i = 1
+	local nb = 0
+
+	while tab[i][column] == " " do
+		i = i + 1
+	end
+	while i + nb <= #tab and tab[i + nb][column] == tab[i][column] do
+		nb = nb + 1
+	end
+	if nb >= 4 then
+		return true
+	end
+	return false
+end
+
 function check_full(tab)
 	for i=1, #tab[1] do
 		if tab[1][i] == " " then
@@ -143,10 +159,10 @@ function check_full(tab)
 end
 
 function check_end(tab, column, player)
-	if check_line(tab, column) == true then
+	if check_line(tab, column) or check_column(tab, column) then
 		io.write("PLAYER-", player, " won !\n")
 		return tonumber(player)
-	elseif check_full(tab) == true then
+	elseif check_full(tab) then
 		io.write("Game is full, no winner !\n")
 		return "-1"
 	end
@@ -168,8 +184,7 @@ repeat
 		end
 	else
 		column = play(tab, "2")
-		check_end(tab, column, "2")
-		if check_end(tab, column, "1") ~= 0 then
+		if check_end(tab, column, "2") ~= 0 then
 			end_round = true
 		end
 	end
