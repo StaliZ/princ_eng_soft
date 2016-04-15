@@ -64,6 +64,14 @@ function get_column_to_play()
   return tonumber(io.read())
 end
 
+function check_value_to_play(value, columns_max)
+	if value == nil or value <= 0 or value > columns_max then
+		io.write("You must choose a column betwin 1 and ", columns_max, ".\n")
+		return false				
+	end
+	return true
+end
+
 function play(tab, id_player)
 	local valid_input = false
 	local column = 10
