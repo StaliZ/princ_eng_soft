@@ -105,21 +105,46 @@ function play(tab, id_player)
 		os.execute("sleep " .. tonumber(0.2))
 		i = i + 1
 	end
+	return column
+end
+
+function check_line(tab, column)
+	local i = 1
+	local j = 1
+	local left = 0
+	local right = 0
+
+	while tab[i][column] == " " do
+		i = i + 1
+	end
+	while column - j > 0 and tab[i][column - j] == tab[i][column] do
+		j = j + 1
+		left = left + 1
+	end
+	j = 1
+	while column + j <= #tab[1] and tab[i][column + j] == tab[i][column] do
+		j = j + 1
+		right = right + 1
+	end
+	if right + left >= 3 then
+		return true
+	end
+	return false
 end
 
 function check_end(tab, column, player)
-	if check_line(tab, column) or check_column(tab, column) or check_diagonal(tab, column) then
+	if check_line(tab, column) == true then
 		io.write("PLAYER-", player, " won !\n")
-		return player
-	else if check_full(tab) then
-		io.write("Game is full, no winner !\n")
-		return -1
-	else then
-		return 0
+		return tonumber(player)
+	-- elseif check_full(tab) then
+	-- 	io.write("Game is full, no winner !\n")
+	-- 	return "-1"
 	end
+	return 0
 end
 
 local end_round = false
+local column
 local tab
 local i = 0
 
@@ -127,9 +152,16 @@ tab = init_game()
 repeat
 
 	if i % 2 == 0 then
-		play(tab, "1")
+		column = play(tab, "1")
+		if check_end(tab, column, "1") ~= 0 then
+			end_round = true
+		end
 	else
-		play(tab, "2")
+		column = play(tab, "2")
+		check_end(tab, column, "2")
+		if check_end(tab, column, "1") ~= 0 then
+			end_round = true
+		end
 	end
 	i = i + 1
 until end_round == true
