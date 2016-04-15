@@ -72,8 +72,8 @@ function check_value_to_play(value, columns_max)
 	return true
 end
 
-function check_column_to_play(value, tab)
-	if tab[1][columns] == '1' or tab[1][columns] == '2' then
+function check_column_to_play(column, tab)
+	if tab[1][column] == "1" or tab[1][column] == "2" then
 		io.write("This column is full, try an other.\n")
 		return false
 	end
@@ -107,9 +107,18 @@ function play(tab, id_player)
 	end
 end
 
+
+local end_round = false
+local tab
+local i = 0
+
 tab = init_game()
-play(tab, "1")
-play(tab, "1")
-play(tab, "1")
-play(tab, "2")
-play(tab, "1")
+repeat
+
+	if i % 2 == 0 then
+		play(tab, "1")
+	else
+		play(tab, "2")
+	end
+	i = i + 1
+until end_round == true
