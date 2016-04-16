@@ -4,6 +4,7 @@ function init_game()
 	local lines
 	local valid_input = false
 
+	os.execute("clear")
 	repeat
 		io.write("Choose a number of columns: [4-42]\n")
     columns = tonumber(io.read())
@@ -208,24 +209,52 @@ function check_end(tab, column, player)
 	return 0
 end
 
+function replay(p1, p2)
+	local play_game = "Y"
+
+	io.write("\nTOTAL:\n\tPLAYER-1: ", p1, "\n\tPLAYER-2: ", p2, "\n")
+  repeat
+		io.write("Do you want to play a again? [Y/N]")
+		play_game = io.read()
+  until play_game == "N" or play_game == "Y"
+ 	if play_game == "N" then
+ 		return true
+ 	end
+ 	return false
+end
+
 local end_round = false
+local end_game = false
 local column
 local tab
 local i = 0
+local p1 = 0
+local p2 = 0
+local win
 
-tab = init_game()
 repeat
+	tab = init_game()
+	repeat
 
-	if i % 2 == 0 then
-		column = play(tab, "1")
-		if check_end(tab, column, "1") ~= 0 then
-			end_round = true
+		if i % 2 == 0 then
+			column = play(tab, "1")
+			win = check_end(tab, column, "1")
+			if win ~= 0 then
+				end_round = true
+			end
+		else
+			column = play(tab, "2")
+			win = check_end(tab, column, "2")
+			if win ~= 0 then
+				end_round = true
+			end
 		end
-	else
-		column = play(tab, "2")
-		if check_end(tab, column, "2") ~= 0 then
-			end_round = true
-		end
+		i = i + 1
+	until end_round == true
+	if win == 1 then
+		p1 = p1 + 1
+	elseif win == 2 then
+		p2 = p2 + 1
 	end
-	i = i + 1
-until end_round == true
+	end_game = replay(p1, p2)
+until end_game == true
