@@ -148,6 +148,45 @@ function check_column(tab, column)
 	return false
 end
 
+function check_diagonal(tab, column)
+	local i = 1
+	local j = 1
+	local left_bot = 0
+	local left_top = 0
+	local right_bot = 0
+	local right_top = 0
+
+	while tab[i][column] == " " do
+		i = i + 1
+	end
+	
+	while column - j > 0 and i - j > 0 and tab[i - j][column - j] == tab[i][column] do
+		j = j + 1
+		left_top = left_top + 1
+	end
+	j = 1
+	while column + j <= #tab[1] and i + j <= #tab and tab[i + j][column + j] == tab[i][column] do
+		j = j + 1
+		right_bot = right_bot + 1
+	end
+
+	j = 1
+	while column + j <= #tab[1] and i - j > 0 and tab[i - j][column + j] == tab[i][column] do
+		j = j + 1
+		left_bot = left_bot + 1
+	end
+	j = 1
+	while column - j > 0 and i + j <= #tab and tab[i + j][column - j] == tab[i][column] do
+		j = j + 1
+		right_top = right_top + 1
+	end
+
+	if right_top + left_bot >= 3 or right_bot + left_top >= 3 then
+		return true
+	end
+	return false
+end
+
 function check_full(tab)
 	for i=1, #tab[1] do
 		if tab[1][i] == " " then
@@ -159,7 +198,7 @@ function check_full(tab)
 end
 
 function check_end(tab, column, player)
-	if check_line(tab, column) or check_column(tab, column) then
+	if check_line(tab, column) or check_column(tab, column) or check_diagonal(tab, column) then
 		io.write("PLAYER-", player, " won !\n")
 		return tonumber(player)
 	elseif check_full(tab) then
